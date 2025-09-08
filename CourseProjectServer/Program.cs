@@ -5,6 +5,7 @@ using CourseProjectServer.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CourseProjectServer {
@@ -17,7 +18,7 @@ namespace CourseProjectServer {
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseKestrel();
-                    webBuilder.UseUrls("http://localhost:5000/");
+                    webBuilder.UseUrls("http://localhost:5000/", "http://0.0.0.0:80/");
                     webBuilder.UseStartup<Startup>();
                 });
     }
@@ -41,10 +42,9 @@ namespace CourseProjectServer {
                         .AllowCredentials();
                 });
 
-                options.AddPolicy("ProdCors", builder =>
-                {
+                options.AddPolicy("ProdCors", builder => {
                     builder
-                        .WithOrigins("https://myapp.com") // домен продакшн фронтенда
+                        .WithOrigins("https://diploma-v1-nout.vercel.app", "http://localhost:4200") // домен продакшн фронтенда
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -76,7 +76,7 @@ namespace CourseProjectServer {
                 });
         }
 
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+        public async void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
             app.UseRouting();
 
             if (env.IsDevelopment()) {
@@ -218,6 +218,11 @@ namespace CourseProjectServer {
                     (EntetiesController controller, int id) => controller.DeleteKnowladgeBase(id));
                 #endregion
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
+                var context = serviceScope.ServiceProvider.GetRequiredService<CourseDbContext>();
+                await context.Database.MigrateAsync();
+            }
         }
     }
 }

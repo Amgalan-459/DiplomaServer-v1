@@ -10,6 +10,9 @@ namespace CourseProjectServer.Data.Context {
         public DbSet<Workout> Workouts { get; set; }
         public DbSet<ExerciseRaw> ExerciseRaws { get; set; }
         public DbSet<KnowladgeBase> KnowladgeBases { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         public CourseDbContext (DbContextOptions options) : base(options) {
         }
@@ -18,7 +21,7 @@ namespace CourseProjectServer.Data.Context {
         }
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=diploma;Username=amga;Password=amga;");
+            optionsBuilder.UseNpgsql("Host=dpg-d2ov6g24d50c73aeji20-a.oregon-postgres.render.com;Port=5432;Database=dbdiploma;Username=amga;Password=ELxWKDMnCRbrTaE1NA7kdYZyT5cZqXhv;");
         }
     }
 }
