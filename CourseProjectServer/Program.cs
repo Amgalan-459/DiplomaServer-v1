@@ -168,7 +168,7 @@ namespace CourseProjectServer {
                         controller.AddAdmin(admin));
 
                 endpoints.MapPost("/api/knowladgebase",
-                    [Authorize] (EntetiesController controller, [FromBody] KnowladgeBase knowladge) =>
+                    (EntetiesController controller, [FromBody] KnowladgeBase knowladge) =>
                         controller.AddKnowladgeBase(knowladge));
                 
                 //также для подтверждения email. Еще потом добавить в бд isEmailApproved
