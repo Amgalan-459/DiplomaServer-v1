@@ -13,6 +13,8 @@ namespace CourseProjectServer.Data.Context {
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<TraineesKnowledgeBases> TraineesKnowledgeBasess { get; set; }
 
         public CourseDbContext (DbContextOptions options) : base(options) {
         }

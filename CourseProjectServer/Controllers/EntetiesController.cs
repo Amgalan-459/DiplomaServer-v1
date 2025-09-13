@@ -64,6 +64,54 @@ namespace CourseProjectServer.Controllers { //потом добавить про
             return await dbContext.KnowladgeBases.ToArrayAsync();
         }
 
+        internal async Task<IEnumerable<Course>> GetAllCourses () {
+            _logger.LogInformation("course get all");
+
+            return await dbContext.Courses.ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Course>> GetAllAvailableCourses () {
+            _logger.LogInformation("course available get all");
+
+            return await dbContext.Courses.Where(c => c.IsAvaibale).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Module>> GetAllModules () {
+            _logger.LogInformation("module get all");
+
+            return await dbContext.Modules.ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Module>> GetAllAvailableModules () {
+            _logger.LogInformation("module available get all");
+
+            return await dbContext.Modules.Where(m => m.IsAvailable).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Lesson>> GetAllLessons () {
+            _logger.LogInformation("lesson get all");
+
+            return await dbContext.Lessons.ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Lesson>> GetAllAvailableLessons () {
+            _logger.LogInformation("lesson available get all");
+
+            return await dbContext.Lessons.Where(l => l.IsAvailable).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Test>> GetAllTests () {
+            _logger.LogInformation("test get all");
+
+            return await dbContext.Tests.ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Test>> GetAllAvailableTests () {
+            _logger.LogInformation("test available get all");
+
+            return await dbContext.Tests.Where(t => t.IsAvailable).ToArrayAsync();
+        }
+
         internal async Task<Trainee> GetTrainee (int id) {
             _logger.LogInformation($"trainee get {id}");
 
@@ -106,6 +154,55 @@ namespace CourseProjectServer.Controllers { //потом добавить про
             return await dbContext.KnowladgeBases.Where(k => k.Id == id).FirstOrDefaultAsync();
         }
 
+        internal async Task<Course> GetCourse (int id) {
+            _logger.LogInformation($"course base get {id}");
+
+            return await dbContext.Courses.Where(c => c.Id == id).FirstOrDefaultAsync();
+        }
+
+        //потом переделать на права, чтобы админ мог все, а юзер только доступное и чтобы все было в 1 функции
+        internal async Task<Course> GetAvailableCourse (int id) {
+            _logger.LogInformation($"course available base get {id}");
+
+            return await dbContext.Courses.Where(c => c.Id == id && c.IsAvaibale).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Module> GetModule (int id) {
+            _logger.LogInformation($"module base get {id}");
+
+            return await dbContext.Modules.Where(m => m.Id == id).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Module> GetAvailableModule (int id) {
+            _logger.LogInformation($"module available base get {id}");
+
+            return await dbContext.Modules.Where(m => m.Id == id && m.IsAvailable).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Lesson> GetLesson (int id) {
+            _logger.LogInformation($"lesson base get {id}");
+
+            return await dbContext.Lessons.Where(l => l.Id == id).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Lesson> GetAvailableLesson (int id) {
+            _logger.LogInformation($"lesson available base get {id}");
+
+            return await dbContext.Lessons.Where(l => l.Id == id && l.IsAvailable).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Test> GetTest (int id) {
+            _logger.LogInformation($"test base get {id}");
+
+            return await dbContext.Tests.Where(t => t.Id == id).FirstOrDefaultAsync();
+        }
+
+        internal async Task<Test> GetAvailableTest (int id) {
+            _logger.LogInformation($"test available base get {id}");
+
+            return await dbContext.Tests.Where(t => t.Id == id && t.IsAvailable).FirstOrDefaultAsync();
+        }
+
         internal async Task<IEnumerable<Workout>> GetWorkoutsByTraineeId (int id) {
             _logger.LogInformation($"workouts by trainee id: {id}");
 
@@ -113,7 +210,7 @@ namespace CourseProjectServer.Controllers { //потом добавить про
         }
 
         internal async Task<IEnumerable<Exercise>> GetExerciseByWorkoutId (int id) {
-            _logger.LogInformation($"exercise by trainee id: {id}");
+            _logger.LogInformation($"exercise by workout id: {id}");
 
             return await dbContext.Exercises.Where(e => e.WorkoutId == id).ToArrayAsync();
         }
@@ -122,6 +219,68 @@ namespace CourseProjectServer.Controllers { //потом добавить про
             _logger.LogInformation($"trinee by trainer id: {id}");
 
             return await dbContext.Trainees.Where(t => t.TrainerId == id).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Module>> GetModulesByCourseId (int id) {
+            _logger.LogInformation($"module by course id: {id}");
+
+            return await dbContext.Modules.Where(m => m.CourseId == id).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Module>> GetAvailableModulesByCourseId (int id) {
+            _logger.LogInformation($"module available by course id: {id}");
+
+            return await dbContext.Modules.Where(m => m.CourseId == id && m.IsAvailable).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Course>> GetCoursesByUserId (int id) {
+            _logger.LogInformation($"course by user id: {id}");
+
+            return await dbContext.Courses.Where(c => c.UserId == id).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Lesson>> GetLessonsByModuleId (int id) {
+            _logger.LogInformation($"lesson by module id: {id}");
+
+            return await dbContext.Lessons.Where(l => l.ModuleId == id).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Lesson>> GetAvailableLessonsByModuleId (int id) {
+            _logger.LogInformation($"lesson available by module id: {id}");
+
+            return await dbContext.Lessons.Where(l => l.ModuleId == id && l.IsAvailable).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Test>> GetTestsByModuleId (int id) {
+            _logger.LogInformation($"module by course id: {id}");
+
+            return await dbContext.Tests.Where(t => t.ModuleId == id).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<Test>> GetAvailableTestsByModuleId (int id) {
+            _logger.LogInformation($"module available by course id: {id}");
+
+            return await dbContext.Tests.Where(t => t.ModuleId == id && t.IsAvailable).ToArrayAsync();
+        }
+
+        internal async Task<IEnumerable<KnowladgeBase>> GetKnowledgeBasesByTraineeId (int traineeId) {
+            _logger.LogInformation($"knowledge base by trainee id: {traineeId}");
+
+            TraineesKnowledgeBases[] traineesKnowledgeBases = await dbContext.TraineesKnowledgeBasess
+                .Where(tK => tK.TraineeId == traineeId)
+                .ToArrayAsync();
+
+            IList<KnowladgeBase> knowladgeBases = new List<KnowladgeBase>();
+            KnowladgeBase[] allKnoledge = await dbContext.KnowladgeBases.ToArrayAsync();
+            foreach(var traineesKnowledgeBase in traineesKnowledgeBases) {
+                foreach(var knowledge in allKnoledge) {
+                    if (knowledge.Id == traineesKnowledgeBase.KnowledgeId) {
+                        knowladgeBases.Add(knowledge);
+                    }
+                }
+            }
+
+            return knowladgeBases.ToArray();
         }
 
         internal async Task<Trainee?> GetTraineeByEmail (string email) {
@@ -236,6 +395,78 @@ namespace CourseProjectServer.Controllers { //потом добавить про
             return TypedResults.Ok(knowladge);
         }
 
+        internal async Task<IResult> AddCourse (Course course) {
+            //проверка, что такого имени нет у других курсов
+            _logger.LogInformation("course post");
+
+            if (dbContext.Courses.Contains(course)) {
+                dbContext.Courses.Update(course);
+            }
+            else {
+                await dbContext.Courses.AddAsync(course);
+            }
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok(course);
+        }
+
+        internal async Task<IResult> AddModule (Module module) {
+            _logger.LogInformation("module post");
+
+            if (dbContext.Modules.Contains(module)) {
+                dbContext.Modules.Update(module);
+            }
+            else {
+                await dbContext.Modules.AddAsync(module);
+            }
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok(module);
+        }
+
+        internal async Task<IResult> AddLesson (Lesson lesson) {
+            _logger.LogInformation("lesson post");
+
+            if (dbContext.Lessons.Contains(lesson)) {
+                dbContext.Lessons.Update(lesson);
+            }
+            else {
+                await dbContext.Lessons.AddAsync(lesson);
+            }
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok(lesson);
+        }
+
+        internal async Task<IResult> AddTest (Test test) {
+            _logger.LogInformation("test post");
+
+            if (dbContext.Tests.Contains(test)) {
+                dbContext.Tests.Update(test);
+            }
+            else {
+                await dbContext.Tests.AddAsync(test);
+            }
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok(test);
+        }
+
+        internal async Task<IResult> AddTraineesKnowledgeBases (int traineeId, int knowledgeId) {
+            _logger.LogInformation("TraineesKnowledgeBases post");
+            TraineesKnowledgeBases traineesKnowledgeBases = new TraineesKnowledgeBases(traineeId, knowledgeId);
+
+            if (dbContext.TraineesKnowledgeBasess.Contains(traineesKnowledgeBases)) {
+                dbContext.TraineesKnowledgeBasess.Update(traineesKnowledgeBases);
+            }
+            else {
+                await dbContext.TraineesKnowledgeBasess.AddAsync(traineesKnowledgeBases);
+            }
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok("Добавлено");
+        }
+
         internal async Task<IResult> ForgotPasswordT(string email) {
             User? user = await dbContext.Trainees.FirstOrDefaultAsync(t => t.Email.Equals(email));
 
@@ -287,6 +518,57 @@ namespace CourseProjectServer.Controllers { //потом добавить про
                 Token = token,
                 Expiration = jwt.ValidTo
             });
+        }
+
+        internal async Task<IResult> PurshuaseCourse (int userId, Course course) {
+            if (course.UserId == userId) {
+                return TypedResults.BadRequest("У пользователя уже есть данный курс");
+            }
+
+            await dbContext.Courses.AddAsync(new Course(course.Title, course.Author, course.Raiting, course.ProgressText, course.Type,
+                course.Image, true, course.Instructions, course.IsAvaibale, course.TrainerId, userId));
+            await dbContext.SaveChangesAsync();
+
+            Module[] modules = await dbContext.Modules.Where(m => m.CourseId == course.Id).ToArrayAsync();
+
+            if (modules.Count() == 0) {
+                return TypedResults.NotFound("Не нашел подобный курс");
+            }
+
+            Course? foundedCourse = dbContext.Courses.Where(c => c.Equals(course)).FirstOrDefault();
+            if (foundedCourse != null) {
+                return TypedResults.BadRequest("Ошибка в добавлении курса");
+            }
+
+            foreach (var module in modules) {
+                Lesson[] lessons = await dbContext.Lessons.Where(l => l.ModuleId == module.Id).ToArrayAsync();
+                Test[] tests = await dbContext.Tests.Where(t => t.ModuleId == module.Id).ToArrayAsync();
+
+                if (lessons.Count() == 0 || tests.Count() == 0) {
+                    return TypedResults.NotFound("Не нашел тесты или уроки по данному модулю");
+                }
+
+                Module newModule = new(module.Title, true, module.IsAvailable, foundedCourse!.Id);
+                await dbContext.Modules.AddAsync(newModule);
+                await dbContext.SaveChangesAsync();
+                Module? foundedModule = dbContext.Modules.Where(m => m.Equals(newModule))
+                    .FirstOrDefault();
+                if (foundedModule != null) {
+                    return TypedResults.NotFound("произошла ошибка в добавлении нового модуля");
+                }
+
+                foreach(Lesson lesson in lessons) {
+                    await dbContext.Lessons.AddAsync(new Lesson(lesson.Title, false, lesson.VideoUrl,
+                        lesson.Content, lesson.IsAvailable, foundedModule!.Id));
+                }
+                foreach (Test test in tests) {
+                    await dbContext.Tests.AddAsync(new Test(test.Title, false, test.Url, test.IsAvailable, foundedModule!.Id));
+                }
+                await dbContext.SaveChangesAsync();
+            }
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok(course);
         }
         #endregion
 
@@ -385,6 +667,62 @@ namespace CourseProjectServer.Controllers { //потом добавить про
                 return TypedResults.NotFound($"База знаний с ID = {id} не найдена");
             }
             dbContext.KnowladgeBases.Remove(knowladge);
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
+        }
+
+        internal async Task<IResult> DeleteCourse (int id) {
+            _logger.LogInformation("course base delete");
+            Course? course = await dbContext.Courses.Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+            if (course is null) {
+                _logger.LogInformation("course base not found");
+                return TypedResults.NotFound($"Курс с ID = {id} не найдена");
+            }
+            dbContext.Courses.Remove(course);
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
+        }
+
+        internal async Task<IResult> DeleteModule (int id) {
+            _logger.LogInformation("module base delete");
+            Module? module = await dbContext.Modules.Where(m => m.Id == id)
+                .FirstOrDefaultAsync();
+            if (module is null) {
+                _logger.LogInformation("module base not found");
+                return TypedResults.NotFound($"Модуль с ID = {id} не найдена");
+            }
+            dbContext.Modules.Remove(module);
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
+        }
+
+        internal async Task<IResult> DeleteLesson (int id) {
+            _logger.LogInformation("lesson base delete");
+            Lesson? lesson = await dbContext.Lessons.Where(l => l.Id == id)
+                .FirstOrDefaultAsync();
+            if (lesson is null) {
+                _logger.LogInformation("lesson base not found");
+                return TypedResults.NotFound($"Урок с ID = {id} не найдена");
+            }
+            dbContext.Lessons.Remove(lesson);
+
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
+        }
+
+        internal async Task<IResult> DeleteTest (int id) {
+            _logger.LogInformation("test base delete");
+            Test? test = await dbContext.Tests.Where(t => t.Id == id)
+                .FirstOrDefaultAsync();
+            if (test is null) {
+                _logger.LogInformation("test base not found");
+                return TypedResults.NotFound($"Тест с ID = {id} не найдена");
+            }
+            dbContext.Tests.Remove(test);
 
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
