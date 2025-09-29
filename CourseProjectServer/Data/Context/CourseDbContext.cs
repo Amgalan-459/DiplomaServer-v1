@@ -23,7 +23,7 @@ namespace CourseProjectServer.Data.Context {
         }
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseNpgsql("Host=dpg-d2ov6g24d50c73aeji20-a.oregon-postgres.render.com;Port=5432;Database=dbdiploma;Username=amga;Password=ELxWKDMnCRbrTaE1NA7kdYZyT5cZqXhv;");
+            optionsBuilder.UseNpgsql("Host=db;Port=5432;Database=diplomadb;Username=postgres;Password=p@55w0rd;");
         }
     }
 }

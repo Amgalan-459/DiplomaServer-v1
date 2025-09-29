@@ -19,7 +19,7 @@ namespace CourseProjectServer {
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseKestrel();
-                    webBuilder.UseUrls("http://localhost:5000/", "http://0.0.0.0:80/");
+                    webBuilder.UseUrls("http://localhost:5000/", "http://0.0.0.0:80/", "http://0.0.0.0:8080/");
                     webBuilder.UseStartup<Startup>();
                 });
     }
@@ -80,9 +80,10 @@ namespace CourseProjectServer {
         public async void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
             app.UseRouting();
 
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
             if (env.IsDevelopment()) {
-                app.UseSwagger();
-                app.UseSwaggerUI();
                 app.UseCors("DevCors");
             }
             else {
